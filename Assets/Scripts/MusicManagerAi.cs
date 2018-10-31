@@ -4,26 +4,29 @@ using UnityEngine;
 
 public class MusicManagerAi : MonoBehaviour {
 
-    public GameObject[] musicHolder;
-    public Track[] repertory = new Track[5];
-    public Material[] mat = new Material[3];
+    public GameObject[] musicHolder; // 3d model for the music img
+    public Track[] repertory; // List of Tracks
+    public Material[] mat = new Material[3]; // Temporary image placeholder
 
-    public int holderSize = 3;
-    public float offSet = 3.5f;
-    public int musicSelection = 0;
-
+    public int holderSize = 3; // Indicates the number of tracks
+    public float offSet = 3.5f; // Offset of the 3d models (MusicHolder)
+    public int musicSelection = 0; // counter for the music to play
+    
     public Dictionary <int,Track> trackList;
+
     // Use this for initialization
     void Start() {
+
         musicHolder = new GameObject[holderSize];
+        repertory = new Track[holderSize];
         trackList = new Dictionary<int, Track>();
      
         for (int i = 0; i < holderSize; i++)
         {
             musicHolder[i] = Resources.Load("MusicHolders") as GameObject;
-            trackList.Add(i, );
+            trackList.Add(i, repertory[i]);
         }
-
+ 
         InstantiateTrackList();
     }
 	
@@ -34,6 +37,8 @@ public class MusicManagerAi : MonoBehaviour {
 
     void movement()
     {
+        ///-----INPUTS!-----//
+
         if (Input.GetKeyDown(KeyCode.LeftArrow)){
             Vector3 newPos = transform.position;
             newPos.x += offSet;

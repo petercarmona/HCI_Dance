@@ -284,7 +284,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicHolder: []
-  trackList: 
+  repertory:
+  - _trackName: 2 Bad!
+    _song: {fileID: 8300000, guid: d832aae5faecf424f86185c20604804a, type: 3}
+    _preview: {fileID: 8300000, guid: 00488768fec433045a0aa9f85a2e553b, type: 3}
+    _dificulty: 1
+    _author: WivBurn
   mat:
   - {fileID: 2100000, guid: 50c00b7b55df3a143b7c463243411eca, type: 2}
   - {fileID: 2100000, guid: 110791050124f5e4c8c9eaaac29d1c3c, type: 2}
