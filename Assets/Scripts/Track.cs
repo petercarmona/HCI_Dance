@@ -15,17 +15,17 @@ public class Track {
     [SerializeField]
     private AudioClip _preview;
     [SerializeField]
-    private int _dificulty;
+    private string _dificulty;
     [SerializeField]
     private string _author;
     
     //----Properties-----//
 
-    public string trackName { get { return _trackName; } set { value = _trackName; } }
-    public AudioClip song { get { return _song; } set { value = _song; } }
-    public AudioClip preview { get { return _preview; } set { value = _preview; } }
-    public int difculty { get { return _dificulty; } set { value = _dificulty; } }
-    public string author { get { return _author; } set { value = _author; } }
+    public string trackName { get { return _trackName; } set { _trackName = value; } }
+    public AudioClip song { get { return _song; } set { _song = value; } }
+    public AudioClip preview { get { return _preview; } set { _preview = value; } }
+    public string dificulty { get { return _dificulty; } set { _dificulty = value; } }
+    public string author { get { return _author; } set { _author = value; } }
 
     //-----Consructors-----//
 
@@ -34,11 +34,11 @@ public class Track {
         _trackName = "undefined";
         _song = null;
         _preview = null;
-        _dificulty = -1;    
+        _dificulty = "undefined";
         _author = "undefined";
     }
 
-    Track(string trackName, AudioClip song, AudioClip preview, int dificulty, string author)
+    Track(string trackName, AudioClip song, AudioClip preview, string dificulty, string author)
     {
         _trackName = trackName;
         _song = song;

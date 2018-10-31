@@ -1,43 +1,62 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.Audio;
 
 public class MusicManagerAi : MonoBehaviour {
 
     public GameObject[] musicHolder; // 3d model for the music img
     public Track[] repertory; // List of Tracks
-    public Material[] mat = new Material[3]; // Temporary image placeholder
+    public Material[] mat; // Temporary image placeholder
 
-    public int holderSize = 3; // Indicates the number of tracks
+    public int holderSize = 1; // Indicates the number of tracks
     public float offSet = 3.5f; // Offset of the 3d models (MusicHolder)
     public int musicSelection = 0; // counter for the music to play
     
     public Dictionary <int,Track> trackList;
+    public Dictionary<int, string> dificulty;
+    public int dificultyLevel;
+
+    public AudioSource audioSource;
 
     // Use this for initialization
     void Start() {
 
         musicHolder = new GameObject[holderSize];
-        repertory = new Track[holderSize];
         trackList = new Dictionary<int, Track>();
-     
+        
         for (int i = 0; i < holderSize; i++)
         {
             musicHolder[i] = Resources.Load("MusicHolders") as GameObject;
             trackList.Add(i, repertory[i]);
         }
- 
+
+        dificulty = new Dictionary<int, string>();
+        dificulty.Add(0, "Easy");
+        dificulty.Add(1, "Normal");
+        dificulty.Add(2, "Hard");
+
+        audioSource = GetComponent<AudioSource>();
+
         InstantiateTrackList();
+
+        // MusicShowcase
+        audioSource.Play();
+        audioSource.clip = trackList[musicSelection].song;
+        audioSource.loop = true;
+        audioSource.Play();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        movement();
+        selection();
 	}
 
-    void movement()
+    void selection()
     {
-        ///-----INPUTS!-----//
+        //-----INPUTS!-----//
+        
 
         if (Input.GetKeyDown(KeyCode.LeftArrow)){
             Vector3 newPos = transform.position;
@@ -62,8 +81,16 @@ public class MusicManagerAi : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-
+            dificultyLevel = findDificulty(musicSelection);
+            dificultyLevel++;
+            if (dificultyLevel > 2)
+                dificultyLevel = 0;
+            trackList[musicSelection].dificulty = dificulty[dificultyLevel];
+            transform.Find("Music " + musicSelection).Find("Dificulty").GetComponent<TextMeshPro>().text = dificulty[dificultyLevel];
         }
+
+        
+
 
     }
 
@@ -74,11 +101,27 @@ public class MusicManagerAi : MonoBehaviour {
         {
             tmp.x = i * 3.5f;
 
+            // Instantiate MusicHolder
             GameObject go = Instantiate(musicHolder[i], tmp, Quaternion.identity) as GameObject;
             go.transform.SetParent(transform);
             go.name = "Music " + (i);
-            go.GetComponent<Renderer>().material = mat[Random.Range(0, 3)];
+            go.transform.Find("Image").GetComponent<Renderer>().material = mat[musicSelection];
+            go.transform.Find("NameText").GetComponent<TextMeshPro>().text = trackList[i].trackName;
+            go.transform.Find("AutorText").GetComponent<TextMeshPro>().text = trackList[i].author;
+            go.transform.Find("Dificulty").GetComponent<TextMeshPro>().text = trackList[i].dificulty;
         }
+    }
+
+    int findDificulty(int trackIndex)
+    {
+        if (trackList[trackIndex].dificulty == "Easy")
+            return 0;
+        else if (trackList[trackIndex].dificulty == "Normal")
+            return 1;
+        else if (trackList[trackIndex].dificulty == "Hard")
+            return 2;
+        else
+            return -1; 
     }
 }
     
